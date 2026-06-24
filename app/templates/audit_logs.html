@@ -3,6 +3,12 @@
 {% block content %}
 <h1 class="section-title mb-4">Audit Logs</h1>
 
+{% if current_role == 'MANAGER' %}
+<div class="mb-3">
+    <a class="btn btn-sm btn-outline-primary" href="{{ url_for('admin.manager_add_admin') }}">Create Admin</a>
+</div>
+{% endif %}
+
 <div class="row g-4">
     <div class="col-lg-8">
         <div class="card table-responsive h-100">

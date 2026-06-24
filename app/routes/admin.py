@@ -44,3 +44,46 @@ def audit_logs():
     logs = AuditLog.query.order_by(AuditLog.log_time.desc()).limit(200).all()
     failed_logins = FailedLogin.query.order_by(FailedLogin.attempt_time.desc()).limit(50).all()
     return render_template("audit_logs.html", logs=logs, failed_logins=failed_logins)
+
+
+@admin_bp.route("/manager/add-admin", methods=["GET", "POST"])
+@login_required
+@roles_required("MANAGER")
+def manager_add_admin():
+    """Allow managers to create admin users.
+
+    This endpoint is intentionally limited: managers can only create new users
+    with the ADMIN role (or update an existing user to ADMIN). They cannot
+    change other users' roles or view the full user management interface.
+    """
+    current_user = get_current_user()
+    if request.method == "POST":
+        username = request.form.get("username", "").strip()
+        email = request.form.get("email", "").strip().lower()
+        password = request.form.get("password", "")
+        if not username or not email or not password:
+            flash("All fields are required.", "danger")
+            return render_template("add_admin.html")
+        existing = User.query.filter((User.username == username) | (User.email == email)).first()
+        if existing:
+            # If user exists, upgrade role to ADMIN and reset password
+            from extensions import bcrypt as _bcrypt
+
+            existing.password_hash = _bcrypt.generate_password_hash(password).decode("utf-8")
+            existing.role = "ADMIN"
+            db.session.commit()
+            log_action(current_user.user_id, "CREATE_ADMIN", f"Upgraded existing user {username} to ADMIN")
+            flash("Existing user upgraded to ADMIN.", "success")
+            return redirect(url_for("admin.audit_logs"))
+        # create new admin user
+        from extensions import bcrypt as _bcrypt
+
+        pw_hash = _bcrypt.generate_password_hash(password).decode("utf-8")
+        new_user = User(username=username, email=email, password_hash=pw_hash, role="ADMIN")
+        db.session.add(new_user)
+        db.session.commit()
+        log_action(current_user.user_id, "CREATE_ADMIN", f"Created new admin {username}")
+        flash("New admin user created.", "success")
+        return redirect(url_for("admin.audit_logs"))
+
+    return render_template("add_admin.html")

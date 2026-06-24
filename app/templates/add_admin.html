@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block title %}Create Admin · Encrypted DBMS{% endblock %}
+{% block content %}
+<h1 class="section-title mb-4">Create Admin User</h1>
+
+<div class="card p-4" style="max-width:600px;">
+    <form method="post">
+        <div class="mb-3">
+            <label class="form-label">Username</label>
+            <input name="username" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Email</label>
+            <input name="email" type="email" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Password</label>
+            <input name="password" type="password" class="form-control" required>
+        </div>
+        <div class="d-flex gap-2">
+            <button class="btn btn-primary" type="submit">Create Admin</button>
+            <a class="btn btn-secondary" href="{{ url_for('admin.audit_logs') }}">Cancel</a>
+        </div>
+    </form>
+</div>
+
+{% endblock %}

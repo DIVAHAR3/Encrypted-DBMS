@@ -1,0 +1,2 @@
+customer_id,name,email,phone,address,created_by,creator_username,created_at
+1,Alice Demo,alice.demo@example.com,1234567890,123 Demo Street,6,browseruser20260624,2026-06-24T06:00:17
