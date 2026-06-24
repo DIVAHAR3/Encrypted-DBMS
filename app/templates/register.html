@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block title %}Register · Encrypted DBMS{% endblock %}
+{% block content %}
+<div class="auth-shell">
+    <div class="card auth-card glass-panel">
+        <div class="row g-0">
+            <div class="col-lg-5 auth-illustration p-5 d-flex flex-column justify-content-between">
+                <div>
+                    <span class="kpi-chip mb-3">User onboarding</span>
+                    <h1 class="display-6 fw-bold">Create a secure account</h1>
+                    <p class="lead mt-3 small-muted">Registration stores only hashed credentials. Customer data is encrypted before it reaches MySQL.</p>
+                </div>
+                <div class="small-muted">Default registration role: EMPLOYEE</div>
+            </div>
+            <div class="col-lg-7 p-4 p-lg-5">
+                <h2 class="section-title mb-4">Register</h2>
+                <form method="post" class="row g-3">
+                    <div class="col-md-6">
+                        <label class="form-label">Username</label>
+                        <input type="text" name="username" class="form-control form-control-lg" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Email</label>
+                        <input type="email" name="email" class="form-control form-control-lg" required>
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label">Password</label>
+                        <input type="password" name="password" class="form-control form-control-lg" minlength="8" required>
+                    </div>
+                    <div class="col-12 d-flex align-items-center justify-content-between gap-3 flex-wrap">
+                        <button class="btn btn-brand btn-lg px-4" type="submit">Create Account</button>
+                        <a href="{{ url_for('auth.login') }}">Already registered? Sign in</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

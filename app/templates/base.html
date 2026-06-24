@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}Encrypted DBMS{% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+    <div class="container-fluid px-4">
+        <a class="navbar-brand" href="{{ url_for('dashboard.dashboard') if current_user else url_for('auth.login') }}">Encrypted DBMS</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navMenu">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                {% if current_user %}
+                <li class="nav-item"><a class="nav-link" href="{{ url_for('dashboard.dashboard') }}">Dashboard</a></li>
+                {% if current_role in ['ADMIN', 'MANAGER'] %}
+                <li class="nav-item"><a class="nav-link" href="{{ url_for('dashboard.manager_portal') }}">{% if current_role == 'ADMIN' %}Admin Portal{% else %}Manager Portal{% endif %}</a></li>
+                {% endif %}
+                <li class="nav-item"><a class="nav-link" href="{{ url_for('customers.customers') }}">Customers</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ url_for('customers.add_customer') }}">Add Customer</a></li>
+                {% if current_role in ['ADMIN', 'MANAGER'] %}
+                <li class="nav-item"><a class="nav-link" href="{{ url_for('admin.audit_logs') }}">Audit Logs</a></li>
+                {% endif %}
+                {% if current_role == 'ADMIN' %}
+                <li class="nav-item"><a class="nav-link" href="{{ url_for('admin.users') }}">User Management</a></li>
+                {% endif %}
+                <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.profile') }}">Profile</a></li>
+                {% endif %}
+            </ul>
+            <div class="d-flex align-items-center gap-2">
+                {% if current_user %}
+                    <span class="kpi-chip">{{ current_user.username }} · {{ current_role }}</span>
+                    <a class="btn btn-outline-light btn-sm" href="{{ url_for('auth.logout') }}">Logout</a>
+                {% else %}
+                    <a class="btn btn-outline-light btn-sm" href="{{ url_for('auth.login') }}">Login</a>
+                    <a class="btn btn-brand btn-sm" href="{{ url_for('auth.register') }}">Register</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</nav>
+
+<main class="container py-4 py-lg-5 position-relative">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="mb-4">
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} mb-2 shadow-sm" role="alert">{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    {% block content %}{% endblock %}
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

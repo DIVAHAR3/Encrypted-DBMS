@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% block title %}Audit Logs · Encrypted DBMS{% endblock %}
+{% block content %}
+<h1 class="section-title mb-4">Audit Logs</h1>
+
+<div class="row g-4">
+    <div class="col-lg-8">
+        <div class="card table-responsive h-100">
+            <div class="card-header py-3"><strong>System Audit Trail</strong></div>
+            <table class="table table-hover align-middle mb-0">
+                <thead>
+                    <tr>
+                        <th>Time</th>
+                        <th>User ID</th>
+                        <th>Action</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for log in logs %}
+                    <tr>
+                        <td>{{ log.log_time }}</td>
+                        <td>{{ log.user_id }}</td>
+                        <td>{{ log.action }}</td>
+                        <td>{{ log.description }}</td>
+                    </tr>
+                    {% else %}
+                    <tr><td colspan="4" class="text-muted text-center py-4">No audit logs available.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="card table-responsive h-100">
+            <div class="card-header py-3"><strong>Failed Login Attempts</strong></div>
+            <table class="table table-sm align-middle mb-0">
+                <thead>
+                    <tr>
+                        <th>Username</th>
+                        <th>IP</th>
+                        <th>Time</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in failed_logins %}
+                    <tr>
+                        <td>{{ item.username }}</td>
+                        <td>{{ item.ip_address }}</td>
+                        <td>{{ item.attempt_time }}</td>
+                    </tr>
+                    {% else %}
+                    <tr><td colspan="3" class="text-muted text-center py-4">No failed logins recorded.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

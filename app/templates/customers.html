@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% block title %}Customers · Encrypted DBMS{% endblock %}
+{% block content %}
+<div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+    <div>
+        <h1 class="section-title mb-1">Customer Records</h1>
+        <div class="small-muted">Encrypted at rest, decrypted only for authenticated users.</div>
+    </div>
+    <a class="btn btn-brand" href="{{ url_for('customers.add_customer') }}">Add Customer</a>
+</div>
+
+<div class="card mb-4">
+    <div class="card-body">
+        <form method="get" class="row g-3 align-items-center">
+            <div class="col-md-9">
+                <input type="search" name="q" value="{{ search_text }}" class="form-control form-control-lg" placeholder="Search by name, email, phone, or address">
+            </div>
+            <div class="col-md-3 d-grid">
+                <button class="btn btn-outline-light btn-lg" type="submit">Search</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="card table-responsive">
+    <table class="table table-hover align-middle mb-0">
+        <thead>
+            <tr>
+                <th>Customer</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Address</th>
+                <th>Created By</th>
+                <th>Created At</th>
+                <th class="text-end">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for customer in customers %}
+            <tr>
+                <td>{{ customer.name }}</td>
+                <td>{{ customer.email }}</td>
+                <td>{{ customer.phone }}</td>
+                <td>{{ customer.address }}</td>
+                <td>{{ customer.created_by }}</td>
+                <td>{{ customer.created_at }}</td>
+                <td class="text-end">
+                    <a class="btn btn-sm btn-outline-light" href="{{ url_for('customers.edit_customer', customer_id=customer.customer_id) }}">Edit</a>
+                    {% if current_role in ['ADMIN', 'MANAGER'] %}
+                    <form method="post" action="{{ url_for('customers.delete_customer', customer_id=customer.customer_id) }}" class="d-inline" onsubmit="return confirm('Delete this customer?');">
+                        <button class="btn btn-sm btn-outline-danger" type="submit">Delete</button>
+                    </form>
+                    {% endif %}
+                </td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="7" class="text-center text-muted py-4">No customer records available.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

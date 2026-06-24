@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% block title %}Profile · Encrypted DBMS{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-7">
+        <div class="card glass-panel">
+            <div class="card-body p-4 p-lg-5">
+                <span class="kpi-chip mb-3">Account profile</span>
+                <h1 class="section-title mb-4">{{ profile_user.username }}</h1>
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <div class="metric-card">
+                            <div class="metric-label">Email</div>
+                            <div class="metric-value" style="font-size: 1.25rem;">{{ profile_user.email }}</div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="metric-card">
+                            <div class="metric-label">Role</div>
+                            <div class="metric-value" style="font-size: 1.25rem;">{{ profile_user.role }}</div>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="metric-card">
+                            <div class="metric-label">Created At</div>
+                            <div class="metric-value" style="font-size: 1.25rem;">{{ profile_user.created_at }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

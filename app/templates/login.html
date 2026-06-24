@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block title %}Login · Encrypted DBMS{% endblock %}
+{% block content %}
+<div class="auth-shell">
+    <div class="card auth-card glass-panel">
+        <div class="row g-0">
+            <div class="col-lg-5 auth-illustration p-5 d-flex flex-column justify-content-between">
+                <div>
+                    <span class="kpi-chip mb-3">Secure access</span>
+                    <h1 class="display-6 fw-bold">Encrypted Database Management System</h1>
+                    <p class="lead mt-3 small-muted">Sign in to manage encrypted customer records, audit activity, and review security statistics.</p>
+                </div>
+                <div class="small-muted">AES-256 encryption · bcrypt password hashing · role-based controls</div>
+            </div>
+            <div class="col-lg-7 p-4 p-lg-5">
+                <h2 class="section-title mb-4">Login</h2>
+                <form method="post" class="row g-3">
+                    <div class="col-12">
+                        <label class="form-label">Username or Email</label>
+                        <input type="text" name="username" class="form-control form-control-lg" placeholder="Enter username or email" required>
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label">Password</label>
+                        <input type="password" name="password" class="form-control form-control-lg" placeholder="Enter password" required>
+                    </div>
+                    <div class="col-12 d-flex align-items-center justify-content-between gap-3 flex-wrap">
+                        <button class="btn btn-brand btn-lg px-4" type="submit">Sign In</button>
+                        <a href="{{ url_for('auth.register') }}">Create a new account</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

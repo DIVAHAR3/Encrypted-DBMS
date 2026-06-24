@@ -1,0 +1,215 @@
+:root {
+    --bg-start: #07111f;
+    --bg-end: #0f1c2f;
+    --panel: rgba(15, 28, 47, 0.88);
+    --panel-strong: #15253d;
+    --line: rgba(154, 174, 214, 0.18);
+    --text: #eef4ff;
+    --muted: #9aa8c7;
+    --accent: #34d3c1;
+    --accent-2: #ffb347;
+    --danger: #ff6b6b;
+    --success: #4ade80;
+}
+
+html, body {
+    min-height: 100%;
+}
+
+body {
+    font-family: "Segoe UI", "Trebuchet MS", sans-serif;
+    color: var(--text);
+    background:
+        radial-gradient(circle at top left, rgba(52, 211, 193, 0.16), transparent 34%),
+        radial-gradient(circle at 90% 12%, rgba(255, 179, 71, 0.14), transparent 25%),
+        linear-gradient(160deg, var(--bg-start), var(--bg-end));
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background-image: linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    opacity: 0.35;
+}
+
+a {
+    color: #8ff5e8;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #c7fff7;
+}
+
+.navbar {
+    background: rgba(8, 16, 30, 0.72) !important;
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--line);
+}
+
+.navbar-brand {
+    font-weight: 700;
+    letter-spacing: 0.04em;
+}
+
+.card,
+.table,
+.form-control,
+.form-select,
+.alert,
+.list-group-item {
+    background-color: var(--panel) !important;
+    color: var(--text) !important;
+    border-color: var(--line) !important;
+}
+
+.card {
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.24);
+}
+
+.card-header {
+    background: rgba(255, 255, 255, 0.03) !important;
+    border-bottom-color: var(--line) !important;
+}
+
+.glass-panel {
+    background: linear-gradient(180deg, rgba(21, 37, 61, 0.94), rgba(15, 28, 47, 0.9));
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 24px;
+    box-shadow: 0 18px 54px rgba(0, 0, 0, 0.28);
+}
+
+.hero-banner {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(135deg, rgba(52, 211, 193, 0.18), rgba(255, 179, 71, 0.12));
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 24px;
+}
+
+.hero-banner::after {
+    content: "";
+    position: absolute;
+    inset: auto -40px -40px auto;
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(52, 211, 193, 0.25), transparent 70%);
+}
+
+.metric-card {
+    border-radius: 20px;
+    padding: 1.2rem;
+    height: 100%;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.03));
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.metric-value {
+    font-size: 2rem;
+    font-weight: 800;
+    line-height: 1;
+}
+
+.metric-label {
+    color: var(--muted);
+    font-size: 0.92rem;
+}
+
+.btn-brand {
+    background: linear-gradient(135deg, var(--accent), #13b7aa);
+    color: #05131c;
+    font-weight: 700;
+    border: none;
+}
+
+.btn-brand:hover {
+    background: linear-gradient(135deg, #67e8dc, #24c4b8);
+    color: #05131c;
+}
+
+.btn-outline-light,
+.btn-outline-secondary,
+.btn-outline-danger,
+.btn-outline-warning {
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.form-control::placeholder {
+    color: rgba(238, 244, 255, 0.5);
+}
+
+.table thead th {
+    color: #cfe1ff;
+    border-bottom-color: var(--line) !important;
+}
+
+.table tbody tr:hover {
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.badge-role {
+    background: rgba(52, 211, 193, 0.16);
+    color: #a7fff2;
+    border: 1px solid rgba(52, 211, 193, 0.3);
+}
+
+.auth-shell {
+    min-height: calc(100vh - 80px);
+    display: grid;
+    place-items: center;
+}
+
+.auth-card {
+    width: min(980px, 100%);
+    overflow: hidden;
+}
+
+.auth-illustration {
+    background: linear-gradient(160deg, rgba(52, 211, 193, 0.24), rgba(15, 28, 47, 0.6));
+    min-height: 100%;
+}
+
+.small-muted {
+    color: var(--muted);
+}
+
+.section-title {
+    letter-spacing: 0.02em;
+    font-weight: 700;
+}
+
+.form-label {
+    color: #dce8ff;
+    font-weight: 600;
+}
+
+.alert {
+    border-radius: 16px;
+}
+
+.list-group-item {
+    border-radius: 16px;
+    margin-bottom: 0.75rem;
+}
+
+.kpi-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.35rem 0.7rem;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    color: #dbe9ff;
+    font-size: 0.88rem;
+}
+
+.text-muted,
+.form-text {
+    color: var(--muted) !important;
+}

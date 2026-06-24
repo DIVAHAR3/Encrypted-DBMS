@@ -1,0 +1,116 @@
+{% extends 'base.html' %}
+{% block title %}Dashboard · Encrypted DBMS{% endblock %}
+{% block content %}
+<div class="hero-banner p-4 p-lg-5 mb-4">
+    <div class="row align-items-center g-4 position-relative">
+        <div class="col-lg-8">
+            <span class="kpi-chip mb-3">Security Dashboard</span>
+            <h1 class="display-5 fw-bold mb-3">Encrypted records, role-based access, and audit visibility in one place.</h1>
+            <p class="lead mb-0 small-muted">Monitor totals, review activity trails, and spot suspicious login patterns without exposing sensitive data in storage.</p>
+        </div>
+        <div class="col-lg-4 text-lg-end">
+            <div class="kpi-chip mb-2">Logged in as {{ current_user.username }}</div>
+            <div class="kpi-chip">Role: {{ current_role }}</div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-3 mb-4">
+    <div class="col-md-3">
+        <div class="metric-card">
+            <div class="metric-label">Total Users</div>
+            <div class="metric-value">{{ total_users }}</div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="metric-card">
+            <div class="metric-label">Customer Records</div>
+            <div class="metric-value">{{ total_customers }}</div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="metric-card">
+            <div class="metric-label">Failed Logins (24h)</div>
+            <div class="metric-value">{{ failed_login_count }}</div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="metric-card">
+            <div class="metric-label">Access Mode</div>
+            <div class="metric-value">{{ current_role }}</div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4">
+    <div class="col-lg-5">
+        <div class="card h-100">
+            <div class="card-header py-3"><strong>Security Alerts</strong></div>
+            <div class="card-body">
+                {% if security_alerts %}
+                    <ul class="list-group list-group-flush">
+                        {% for alert in security_alerts %}
+                            <li class="list-group-item">{{ alert }}</li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p class="small-muted mb-0">No current alerts.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-7">
+        <div class="card h-100 mb-4">
+            <div class="card-header py-3"><strong>Recent Activities</strong></div>
+            <div class="card-body table-responsive">
+                <table class="table table-sm align-middle mb-0">
+                    <thead>
+                        <tr>
+                            <th>Time</th>
+                            <th>Action</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for log in recent_activities %}
+                        <tr>
+                            <td>{{ log.log_time }}</td>
+                            <td>{{ log.action }}</td>
+                            <td>{{ log.description }}</td>
+                        </tr>
+                        {% else %}
+                        <tr><td colspan="3" class="text-muted">No activity yet.</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header py-3"><strong>Recent Failed Logins</strong></div>
+            <div class="card-body table-responsive">
+                <table class="table table-sm align-middle mb-0">
+                    <thead>
+                        <tr>
+                            <th>Username</th>
+                            <th>IP Address</th>
+                            <th>Attempt Time</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in recent_failed_logins %}
+                        <tr>
+                            <td>{{ item.username }}</td>
+                            <td>{{ item.ip_address }}</td>
+                            <td>{{ item.attempt_time }}</td>
+                        </tr>
+                        {% else %}
+                        <tr><td colspan="3" class="text-muted">No failed login attempts in the selected window.</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
