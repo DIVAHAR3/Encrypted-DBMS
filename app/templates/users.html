@@ -1,45 +1,67 @@
 {% extends 'base.html' %}
 {% block title %}User Management · Encrypted DBMS{% endblock %}
 {% block content %}
-<div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
-    <div>
-        <h1 class="section-title mb-1">User Management</h1>
-        <div class="small-muted">Only admins can change user roles.</div>
+<div class="hero-banner p-4 p-lg-5 mb-4">
+    <div class="row align-items-end g-4 position-relative">
+        <div class="col-lg-8">
+            <span class="kpi-chip mb-3">Access control center</span>
+            <h1 class="display-6 fw-bold mb-3">User Management</h1>
+            <p class="lead mb-0 small-muted">Review accounts, adjust roles, and keep privileged access tightly controlled.</p>
+        </div>
+        <div class="col-lg-4">
+            <div class="d-flex flex-wrap gap-2 justify-content-lg-end">
+                <span class="kpi-chip">{{ user_count }} users</span>
+                <span class="kpi-chip">{{ admin_count }} admins</span>
+                <span class="kpi-chip">{{ manager_count }} managers</span>
+                <span class="kpi-chip">{{ employee_count }} employees</span>
+            </div>
+        </div>
     </div>
 </div>
 
-<div class="card table-responsive">
-    <table class="table table-hover align-middle mb-0">
-        <thead>
-            <tr>
-                <th>User</th>
-                <th>Email</th>
-                <th>Role</th>
-                <th>Created At</th>
-                <th class="text-end">Update Role</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for user in users %}
-            <tr>
-                <td>{{ user.username }}</td>
-                <td>{{ user.email }}</td>
-                <td><span class="badge badge-role">{{ user.role }}</span></td>
-                <td>{{ user.created_at }}</td>
-                <td class="text-end">
-                    <form method="post" class="d-flex justify-content-end gap-2 flex-wrap">
-                        <input type="hidden" name="user_id" value="{{ user.user_id }}">
-                        <select name="role" class="form-select form-select-sm" style="max-width: 180px;">
-                            <option value="EMPLOYEE" {% if user.role == 'EMPLOYEE' %}selected{% endif %}>EMPLOYEE</option>
-                            <option value="MANAGER" {% if user.role == 'MANAGER' %}selected{% endif %}>MANAGER</option>
-                            <option value="ADMIN" {% if user.role == 'ADMIN' %}selected{% endif %}>ADMIN</option>
-                        </select>
-                        <button class="btn btn-sm btn-brand" type="submit">Save</button>
-                    </form>
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+<div class="card table-shell">
+    <div class="card-header d-flex flex-wrap justify-content-between align-items-center gap-2 py-3 px-4">
+        <div>
+            <strong>Role assignments</strong>
+            <div class="small-muted">Only admins can change user roles.</div>
+        </div>
+        <span class="kpi-chip">Last updated live</span>
+    </div>
+    <div class="table-responsive mb-0">
+        <table class="table table-hover align-middle mb-0">
+            <thead>
+                <tr>
+                    <th>User</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Created At</th>
+                    <th class="text-end">Update Role</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                <tr>
+                    <td>
+                        <div class="fw-semibold">{{ user.username }}</div>
+                    </td>
+                    <td class="text-break">{{ user.email }}</td>
+                    <td><span class="badge badge-role">{{ user.role }}</span></td>
+                    <td class="text-nowrap">{{ user.created_at }}</td>
+                    <td class="text-end">
+                        <form method="post" class="d-flex justify-content-end gap-2 flex-wrap role-form">
+                            <input type="hidden" name="user_id" value="{{ user.user_id }}">
+                            <select name="role" class="form-select form-select-sm role-select">
+                                <option value="EMPLOYEE" {% if user.role == 'EMPLOYEE' %}selected{% endif %}>EMPLOYEE</option>
+                                <option value="MANAGER" {% if user.role == 'MANAGER' %}selected{% endif %}>MANAGER</option>
+                                <option value="ADMIN" {% if user.role == 'ADMIN' %}selected{% endif %}>ADMIN</option>
+                            </select>
+                            <button class="btn btn-sm btn-brand role-save" type="submit">Save</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 </div>
 {% endblock %}

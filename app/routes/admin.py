@@ -14,8 +14,12 @@ admin_bp = Blueprint("admin", __name__)
 @roles_required("ADMIN")
 def users():
     current_user = get_current_user()
+    users = User.query.order_by(User.created_at.desc()).all()
     if request.method == "POST":
-        user_id = int(request.form.get("user_id", 0))
+        user_id_raw = request.form.get("user_id", "")
+        if not user_id_raw.isdigit():
+            abort(400)
+        user_id = int(user_id_raw)
         role = request.form.get("role", "EMPLOYEE")
         if role not in {"ADMIN", "MANAGER", "EMPLOYEE"}:
             abort(400)
@@ -33,8 +37,14 @@ def users():
             flash("User role updated.", "success")
         return redirect(url_for("admin.users"))
 
-    users = User.query.order_by(User.created_at.desc()).all()
-    return render_template("users.html", users=users)
+    return render_template(
+        "users.html",
+        users=users,
+        user_count=len(users),
+        admin_count=sum(1 for user in users if user.role == "ADMIN"),
+        manager_count=sum(1 for user in users if user.role == "MANAGER"),
+        employee_count=sum(1 for user in users if user.role == "EMPLOYEE"),
+    )
 
 
 @admin_bp.route("/audit-logs")
@@ -71,8 +81,8 @@ def manager_add_admin():
 
             existing.password_hash = _bcrypt.generate_password_hash(password).decode("utf-8")
             existing.role = "ADMIN"
-            db.session.commit()
             log_action(current_user.user_id, "CREATE_ADMIN", f"Upgraded existing user {username} to ADMIN")
+            db.session.commit()
             flash("Existing user upgraded to ADMIN.", "success")
             return redirect(url_for("admin.audit_logs"))
         # create new admin user
@@ -81,8 +91,8 @@ def manager_add_admin():
         pw_hash = _bcrypt.generate_password_hash(password).decode("utf-8")
         new_user = User(username=username, email=email, password_hash=pw_hash, role="ADMIN")
         db.session.add(new_user)
-        db.session.commit()
         log_action(current_user.user_id, "CREATE_ADMIN", f"Created new admin {username}")
+        db.session.commit()
         flash("New admin user created.", "success")
         return redirect(url_for("admin.audit_logs"))
 
